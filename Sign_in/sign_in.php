@@ -24,13 +24,15 @@
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" required placeholder="Enter your email">
                         <br>
+
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" required placeholder="Enter the password">
                         <br>
+                        
                         <button id="submitBtn">Login</button> 
                     </form>
 
-                    <p id="signup_para">Don't have any account? <span id="signupBtn"><a href="/Project/Sign_up/sign_up.html">Create One</a></span></p>
+                    <p id="signup_para">Don't have any account? <span id="signupBtn"><a href="/Project/Sign_up/sign_up.php">Create One</a></span></p>
 
                 </div>
             </section>
