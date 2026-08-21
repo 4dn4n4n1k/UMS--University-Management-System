@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Sign up | UMS - University Management System</title>
+        <link rel="stylesheet" href="sign_up.css">
+    </head>
+
+    <body>
+        <div class="signup">
+            <section class="left">
+                <h1 id="left-h1">University Management <br> System</h1>
+                <p id="left-para">Authoriyy - Faculty - Student</p>
+            </section>
+
+            <section class="right">
+                
+                <div class="signup-card">
+                    <h2 id="signup-title">Sign Up</h2>
+                    <p id="signup-para">Enter your credentials to continue</p>
+                       
+                    <form action="#" method="post" id="input">
+                        <label for="fullName">Full Name:</label>
+                        <input type="text" name="fullName" id="fullName" placeholder="Enter your full name">
+                        <br>
+
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" id="email" placeholder="Enter your email">
+                        <br>
+
+                        <label for="gender">Gender:</label>
+                        <select id="gender" name="gender" required>
+                            <option value="">----- Select your gender -----</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+
+                        <br>
+
+                        <label for="password">Password:</label>
+                        <input type="password" name="password" id="password" placeholder="Enter your password">
+                        <br>
+
+                        <label for="cPassword">Confirm Password:</label>
+                        <input type="password" name="cPassword" id="cPassword" placeholder="Confirm password">
+
+                        <br>
+
+                        <label for="role">Role:</label>
+                        <select name="role" id="role">
+                            <option value="">----- Select your role -----</option>
+                            <option value="student">Student</option>
+                            <option value="faculty">Faculty</option>
+                            <option value="admin">Admin</option>
+                        </select>
+
+                        <br>
+
+                        <label for="dob">Date of Birth:</label>
+                        <input type="date" name="dob" id="dob">
+
+                        <button id="signUpBtn">Sign up</button>
+                    </form>
+
+                    <p id="signin_para">Already have an account? <span id="signinBtn"><a href="/Project/Sign_in/sign_in.html">Sign in</a></span></p>
+
+                </div>
+            </section>
+        </div>
+    </body>
+</html>
