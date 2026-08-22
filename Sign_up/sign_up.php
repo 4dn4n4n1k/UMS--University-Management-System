@@ -85,6 +85,16 @@
                             ?>
                         </span><br>
 
+                        <label for="avatar">Avatar:</label>
+                        <input type="file" name="avatar" id="avatar">
+                        <span style="color:red">
+                            <?php
+                                if(isset($_GET["avatarError"])){
+                                    echo $_GET["avatarError"];
+                                }
+                            ?>
+                        </span><br>
+
                         <label for="role">Role:</label>
                         <select name="role" id="role">
                             <option value="">----- Select your role -----</option>

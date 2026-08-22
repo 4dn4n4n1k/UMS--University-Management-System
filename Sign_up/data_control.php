@@ -8,6 +8,10 @@
         $cPassword = $_POST["cPassword"];
         $dob = $_POST["dob"];
         $role = $_POST["role"];
+        $avatar = $_FILES["avatar"];
+        $allowedTypes = ["application/pdf", "image/jpeg"];
+        $fileSize = $_FILES["avatar"]["size"];
+        $fileType = $_FILES["avatar"]["type"];
 
         $hasError = false;
         $nameError = "";
@@ -16,6 +20,8 @@
         $dobError = "";
         $passwordError = "";
         $roleError = "";
+        $avatarError = "";
+        $avatarError = "";
 
         if($fName == ""){
             $nameError = "Name should be provided";
@@ -50,6 +56,7 @@
         }
         elseif(strlen($password) < 8){
             $passwordError = "Password must be 8 characters long";
+            $hasError = true;
         }
 
         if(empty($dob)){
@@ -62,8 +69,25 @@
             $hasError = true;
         }
 
+        if($avatarError == UPLOAD_ERR_NO_FILE){
+            $avatarError = "Profile picture must be provided";
+            $hasError = true;
+        }
+        elseif($avatar["error"] != UPLOAD_ERR_OK){
+            $avatarError = "Error uploading profile picture";
+            $hasError = true;
+        }
+        elseif($fileSize>(2*1024*1024)){
+            $avatarError = "File should be under 2 MB";
+            $hasError = true;
+        }
+        elseif(!in_array($fileType, $allowedTypes)){
+            $avatarError = "File must be jpeg or pdf";
+            $hasError = true;
+        }
+
         if($hasError){
-            $url = $url="Location: sign_up.php?nameError=".urlencode($nameError)."&emailError=".$emailError."&genderError=".$genderError."&passwordError=".$passwordError."&dobError=".$dobError."&roleError=".$roleError;
+            $url = $url="Location: sign_up.php?nameError=".urlencode($nameError)."&emailError=".$emailError."&genderError=".$genderError."&passwordError=".$passwordError."&dobError=".$dobError."&roleError=".$roleError."&avatarError=".$avatarError;
 
             header($url);
         }
