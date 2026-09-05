@@ -105,6 +105,27 @@
             header($url);
         }
         else{
+            $conn = dbConnect();
+
+            if(!$conn){
+                die("Database connection failed.");
+            }
+
+            $sql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
+
+            $stmt = mysqli_prepare($conn, $sql);
+            
+            mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $password, $role);
+
+            if(mysqli_stmt_execute($stmt)){
+                
+            }
+            else{
+                echo "registration Failed: ". mysqli_error($conn); 
+            }
+
+            mysqli_stmt_close($stmt);
+            mysqli_close($conn);
 
         }
     }

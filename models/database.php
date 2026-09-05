@@ -1,20 +1,19 @@
 <?php
     $server = "localhost";
-    $username = "root";
-    $password = "";
+    $dbUsername = "root";
+    $dbPassword = "";
     $db = "ums";
 
 
     function dbConnect(){
         global $server;
-        global $username;
-        global $password;
+        global $dbUsername;
+        global $dbPassword;
         global $db;
 
-        $conn = mysqli_connect($server, $username, $password, $db);
+        $conn = mysqli_connect($server, $dbUsername, $dbPassword, $db);
 
         if($conn){
-            echo "Connection  Successful";
         }
         else{
             echo "Connection failed".mysqli_connect_error();
