@@ -1,4 +1,7 @@
 <?php
+
+    require_once "../models/database.php";
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         
         $fName = trim($_POST["fName"]);
@@ -8,7 +11,7 @@
         $cPassword = $_POST["cPassword"];
         $dob = $_POST["dob"];
         $role = $_POST["role"];
-        $username = $_POST["username"];
+        $username = trim($_POST["username"]);
         $avatar = $_FILES["avatar"];
         $allowedTypes = ["application/pdf", "image/jpeg"];
         $fileSize = $_FILES["avatar"]["size"];
@@ -49,6 +52,10 @@
         }
         if(empty($username)){
             $userError = "Username must be entered";
+            $hasError = true;
+        }
+        elseif(!preg_match('/^[a-zA-Z0-9_]+$/', $username)){
+            $userError = "Username can't contain special characters";
             $hasError = true;
         }
 
