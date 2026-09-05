@@ -8,6 +8,7 @@
         $cPassword = $_POST["cPassword"];
         $dob = $_POST["dob"];
         $role = $_POST["role"];
+        $username = $_POST["username"];
         $avatar = $_FILES["avatar"];
         $allowedTypes = ["application/pdf", "image/jpeg"];
         $fileSize = $_FILES["avatar"]["size"];
@@ -22,6 +23,7 @@
         $roleError = "";
         $avatarError = "";
         $avatarError = "";
+        $userError = "";
 
         if($fName == ""){
             $nameError = "Name should be provided";
@@ -43,6 +45,10 @@
 
         if(empty($gender)){
             $genderError = "Gender must be provided";
+            $hasError = true;
+        }
+        if(empty($username)){
+            $userError = "Username must be entered";
             $hasError = true;
         }
 
@@ -87,7 +93,7 @@
         }
 
         if($hasError){
-            $url = $url="Location: sign_up.php?nameError=".urlencode($nameError)."&emailError=".$emailError."&genderError=".$genderError."&passwordError=".$passwordError."&dobError=".$dobError."&roleError=".$roleError."&avatarError=".$avatarError;
+            $url = $url="Location: sign_up.php?nameError=".urlencode($nameError)."&emailError=".$emailError."&genderError=".$genderError."&passwordError=".$passwordError."&dobError=".$dobError."&roleError=".$roleError."&avatarError=".$avatarError."&userError=".$userError;
 
             header($url);
         }

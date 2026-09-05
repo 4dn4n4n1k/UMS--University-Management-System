@@ -54,6 +54,16 @@
                             ?>
                         </span><br>
 
+                        <label for="username">Username:</label>
+                        <input type="text" name="username" id="username" placeholder="Type a username">
+                        <span style="color: red">
+                            <?php
+                                if(isset($_GET["userError"])){
+                                    echo $_GET["userError"];
+                                }
+                            ?>
+                        </span><br>
+
 
                         <label for="password">Password:</label>
                         <input type="password" name="password" id="password" placeholder="Enter your password">
