@@ -19,7 +19,15 @@
                     <h2 id="login-title">Sign In</h2>
                     <p id="login-para">Enter your credentials to continue</p>
                        
-                    <form action="#" method="post" id="input">
+                    <form action="../models/login.php" method="post" id="input">
+
+                        <p id="feedback">
+                            <?php
+                                if(isset($_GET["error"])){
+                                    echo "Wrong email or password";
+                            }
+                    ?>
+                        </p>
 
                         <label for="email">Email:</label>
                         <input type="email" id="email" name="email" required placeholder="Enter your email">
@@ -29,7 +37,7 @@
                         <input type="password" id="password" name="password" required placeholder="Enter the password">
                         <br>
                         
-                        <button id="submitBtn">Login</button> 
+                        <button type ="submit" id="submitBtn">Login</button> 
                     </form>
 
                     <p id="signup_para">Don't have any account? <span id="signupBtn"><a href="/Project/Sign_up/sign_up.php">Create One</a></span></p>
