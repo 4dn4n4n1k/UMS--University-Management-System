@@ -122,3 +122,16 @@ span a {
     font-size: 12px;
     text-decoration: none;
 }
+
+#feedback{
+    text-align: center;
+    margin: 10px 0;
+}
+
+#feedback.error{
+    color: red;
+}
+
+#feedback.success{
+    color: greenyellow;
+}

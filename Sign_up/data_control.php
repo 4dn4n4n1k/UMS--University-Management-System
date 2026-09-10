@@ -118,10 +118,10 @@
             mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $password, $role);
 
             if(mysqli_stmt_execute($stmt)){
-                
+                header("Location: ../Sign_in/sign_in.php?signup=success");
             }
             else{
-                echo "registration Failed: ". mysqli_error($conn); 
+                echo "Registration Failed: ". mysqli_error($conn); 
             }
 
             mysqli_stmt_close($stmt);

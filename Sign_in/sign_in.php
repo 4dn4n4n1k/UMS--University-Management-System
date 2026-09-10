@@ -25,8 +25,8 @@
                             <?php
                                 if(isset($_GET["error"])){
                                     echo "Wrong email or password";
-                            }
-                    ?>
+                                }
+                            ?>
                         </p>
 
                         <label for="email">Email:</label>
