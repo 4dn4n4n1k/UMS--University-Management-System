@@ -56,7 +56,7 @@
 
                         <label for="username">Username:</label>
                         <input type="text" name="username" id="username" placeholder="Type a username" value="<?php echo isset($_GET['username']) ? htmlspecialchars($_GET['username']) : ''; ?>">
-                        <span style="color: red">
+                        <span id="usernameError">
                             <?php
                                 if(isset($_GET["userError"])){
                                     echo $_GET["userError"];
@@ -128,5 +128,33 @@
                 </div>
             </section>
         </div>
+
+        <script>
+            const usernameInput = document.getElementById("username");
+            const usernameError = document.getElementById("usernameError");
+
+            usernameInput.addEventListener("input", function(){
+                const username = usernameInput.value.trim();
+
+                if(username === ""){
+                    usernameError.innerHTML = "";
+                    return;
+                }
+                fetch("../models/check_username.php?username=" + encodeURIComponent(username)).then(response => response.text()).then(data => {
+                    
+                    data = data.trim();
+                    if(usernameInput.value.trim() !== username) return;
+
+                    if(data == "taken"){
+                        usernameError.innerHTML = "Username already taken";
+                        usernameError.style.color = "red";
+                    }
+                    else if(data === "available"){
+                        usernameError.innerHTML = "Username available";
+                        usernameError.style.color = "yellow";
+                    }
+                }).catch(error => {console.log(error);})
+            });
+        </script>
     </body>
 </html>
