@@ -100,7 +100,7 @@
         }
 
         if($hasError){
-            $url = $url="Location: sign_up.php?". "nameError=".urlencode($nameError)."&emailError=".$emailError."&genderError=".$genderError."&passwordError=".$passwordError."&dobError=".$dobError."&roleError=".$roleError."&avatarError=".$avatarError."&userError=".$userError."&name=".urlencode($fName)."&email=".urlencode($email)."&gender=".urlencode($gender)."&username=".urlencode($username);
+            $url = $url="Location: sign_up.php?". "nameError=".urlencode($nameError)."&emailError=".$emailError."&genderError=".$genderError."&passwordError=".$passwordError."&dobError=".$dobError."&roleError=".$roleError."&avatarError=".$avatarError."&userError=".$userError."&name=".urlencode($fName)."&email=".urlencode($email)."&gender=".urlencode($gender)."&username=".urlencode($username)."&role=".urlencode($role)."&dob=".urlencode($dob)."&avatar=".$avatar;
 
             header($url);
         }
@@ -111,11 +111,13 @@
                 die("Database connection failed.");
             }
 
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
             $sql = "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)";
 
             $stmt = mysqli_prepare($conn, $sql);
             
-            mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $password, $role);
+            mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $passwordHash, $role);
 
             if(mysqli_stmt_execute($stmt)){
                 header("Location: ../Sign_in/sign_in.php?signup=success");

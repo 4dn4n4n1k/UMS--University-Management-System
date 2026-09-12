@@ -8,11 +8,11 @@
             return null;
         }
 
-        $sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        $sql = "SELECT * FROM users WHERE email = ?";
 
         $stmt = mysqli_prepare($conn, $sql);
 
-        mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+        mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
 
         $result = mysqli_stmt_get_result($stmt);
@@ -21,8 +21,10 @@
             
             $row = mysqli_fetch_assoc($result);
 
-            mysqli_close($conn);
-            return $row;
+            if(password_verify($password, $row["password"])){
+                mysqli_close($conn);
+                return $row;
+            }
         }
 
         mysqli_stmt_close($stmt);
