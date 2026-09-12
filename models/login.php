@@ -1,4 +1,6 @@
 <?php
+
+    session_start();
     require_once "database.php";
 
     function login($email, $password){
@@ -40,8 +42,21 @@
         $user = login($email, $password);
 
         if($user !== false){
-            header("Location: ../welcome.php");
-            exit();
+
+            $_SESSION["role"] = $user["role"];
+
+            if($user["role"] == "admin"){
+                header("Location: ../views/admin/admin.php");
+                exit();
+            }
+            elseif($user["role"] == "student"){
+                header("Location: ../views/student/student.php");
+                exit();
+            }
+            elseif($user["role"] == "faculty"){
+                header("Location: ../views/faculty/faculty.php");
+                exit();
+            }
         }
         else{
             header("Location: ../Sign_in/sign_in.php?error=1");

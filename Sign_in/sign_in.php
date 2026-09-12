@@ -21,10 +21,13 @@
                        
                     <form action="../models/login.php" method="post" id="input">
 
-                        <p id="feedback">
+                        <p id="feedback" class="<?php echo isset($_GET["signup"]) ? 'success' : 'error'; ?>" >
                             <?php
                                 if(isset($_GET["error"])){
                                     echo "Wrong email or password";
+                                }
+                                elseif(isset($_GET["signup"]) && $_GET["signup"] == "success"){
+                                    echo "Signup successful. Please login.";
                                 }
                             ?>
                         </p>
