@@ -21,7 +21,7 @@
                        
                     <form action="data_control.php" method="post" id="input" enctype="multipart/form-data">
                         <label for="fName">Full Name:</label>
-                        <input type="text" name="fName" id="fName" placeholder="Enter your full name">
+                        <input type="text" name="fName" id="fName" placeholder="Enter your full name" value="<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>">
                         <span style="color: red;">
                             <?php
                                 if(isset($_GET["nameError"])){
@@ -31,7 +31,7 @@
                         </span><br>
 
                         <label for="email">Email:</label>
-                        <input type="email" name="email" id="email" placeholder="Enter your email">
+                        <input type="email" name="email" id="email" placeholder="Enter your email" value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>">
                         <span style="color: red;">
                             <?php
                                 if(isset($_GET["emailError"])){
@@ -43,8 +43,8 @@
                         <label for="gender">Gender:</label>
                         <select id="gender" name="gender">
                             <option value="">----- Select your gender -----</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="male" <?php echo isset($_GET['gender']) && $_GET['gender'] == 'male' ? 'selected' : ''; ?>>Male</option>
+                            <option value="female" <?php echo isset($_GET['gender']) && $_GET['gender'] == 'female' ? 'selected' : ''; ?>>Female</option>
                         </select>
                         <span style="color: red;">
                             <?php
@@ -55,7 +55,7 @@
                         </span><br>
 
                         <label for="username">Username:</label>
-                        <input type="text" name="username" id="username" placeholder="Type a username">
+                        <input type="text" name="username" id="username" placeholder="Type a username" value="<?php echo isset($_GET['username']) ? htmlspecialchars($_GET['username']) : ''; ?>">
                         <span style="color: red">
                             <?php
                                 if(isset($_GET["userError"])){
@@ -86,7 +86,7 @@
                         </span><br>
                         
                         <label for="dob">Date of Birth:</label>
-                        <input type="date" name="dob" id="dob">
+                        <input type="date" name="dob" id="dob" value="<?php echo isset($_GET['dob']) ? htmlspecialchars($_GET['dob']) : ''; ?>">
                         <span style="color: red;">
                             <?php
                                 if(isset($_GET["dobError"])){
@@ -108,9 +108,9 @@
                         <label for="role">Role:</label>
                         <select name="role" id="role">
                             <option value="">----- Select your role -----</option>
-                            <option value="student">Student</option>
-                            <option value="faculty">Faculty</option>
-                            <option value="admin">Admin</option>
+                            <option value="student" <?php echo (isset($_GET['role']) && $_GET['role'] == 'student') ? 'selected' : ''; ?>>Student</option>
+                            <option value="faculty" <?php echo (isset($_GET['role']) && $_GET['role'] == 'faculty') ? 'selected' : ''; ?>>Faculty</option>
+                            <option value="admin" <?php echo (isset($_GET['role']) && $_GET['role'] == 'admin') ? 'selected' : ''; ?>>Admin</option>
                         </select>
                        <span style="color: red;">
                         <?php

@@ -100,7 +100,7 @@
         }
 
         if($hasError){
-            $url = $url="Location: sign_up.php?nameError=".urlencode($nameError)."&emailError=".$emailError."&genderError=".$genderError."&passwordError=".$passwordError."&dobError=".$dobError."&roleError=".$roleError."&avatarError=".$avatarError."&userError=".$userError;
+            $url = $url="Location: sign_up.php?". "nameError=".urlencode($nameError)."&emailError=".$emailError."&genderError=".$genderError."&passwordError=".$passwordError."&dobError=".$dobError."&roleError=".$roleError."&avatarError=".$avatarError."&userError=".$userError."&name=".urlencode($fName)."&email=".urlencode($email)."&gender=".urlencode($gender)."&username=".urlencode($username);
 
             header($url);
         }
