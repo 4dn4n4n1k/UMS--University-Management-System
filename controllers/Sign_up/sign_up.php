@@ -123,7 +123,7 @@
                         <button id="signUpBtn">Sign up</button>
                     </form>
 
-                    <p id="signin_para">Already have an account? <span id="signinBtn"><a href="/Project/Sign_in/sign_in.php">Sign in</a></span></p>
+                    <p id="signin_para">Already have an account? <span id="signinBtn"><a href="/Project/controllers/Sign_in/sign_in.php">Sign in</a></span></p>
 
                 </div>
             </section>
@@ -154,7 +154,7 @@
                     }
                 }
 
-                xmlhttp.open("GET", "../models/check_username.php?username=" + encodeURIComponent(str), true);
+                xmlhttp.open("GET", "../../models/check_username.php?username=" + encodeURIComponent(str), true);
                 xmlhttp.send();
             }
         }

@@ -19,7 +19,7 @@
                     <h2 id="login-title">Sign In</h2>
                     <p id="login-para">Enter your credentials to continue</p>
                        
-                    <form action="../models/login.php" method="post" id="input">
+                    <form action="../../models/login.php" method="post" id="input">
 
                         <p id="feedback" class="<?php echo isset($_GET["signup"]) ? 'success' : 'error'; ?>" >
                             <?php
@@ -43,7 +43,7 @@
                         <button type ="submit" id="submitBtn">Login</button> 
                     </form>
 
-                    <p id="signup_para">Don't have any account? <span id="signupBtn"><a href="/Project/Sign_up/sign_up.php">Create One</a></span></p>
+                    <p id="signup_para">Don't have any account? <span id="signupBtn"><a href="/Project/controllers/Sign_up/sign_up.php">Create One</a></span></p>
 
                 </div>
             </section>

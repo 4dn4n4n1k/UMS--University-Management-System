@@ -1,6 +1,6 @@
 <?php
 
-    require_once "../models/database.php";
+    require_once "../../models/database.php";
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         
