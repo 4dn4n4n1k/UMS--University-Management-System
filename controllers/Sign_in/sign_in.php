@@ -43,7 +43,7 @@
                         <button type ="submit" id="submitBtn">Login</button> 
                     </form>
 
-                    <p id="signup_para">Don't have any account? <span id="signupBtn"><a href="/Project/controllers/Sign_up/sign_up.php">Create One</a></span></p>
+                    <p id="signup_para">Don't have any account? <span id="signupBtn"><a href="../Sign_up/sign_up.php">Create One</a></span></p>
 
                 </div>
             </section>

@@ -28,7 +28,7 @@ $myCourses=getEnrolledCourses($_SESSION["userId"]);
 
 <head>
     <title>My Courses</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/student.css">
     <script src="js/studentDashboardJs.js" defer></script>
 </head>
 
@@ -54,7 +54,6 @@ $myCourses=getEnrolledCourses($_SESSION["userId"]);
                     <tr>
                         <th>Course Name</th>
                         <th>Credit</th>
-                        <th>Faculty</th>
                     </tr>
                     <?php
                         while($row=mysqli_fetch_assoc($myCourses))
@@ -62,7 +61,6 @@ $myCourses=getEnrolledCourses($_SESSION["userId"]);
                             echo "<tr>";
                             echo "<td>".$row["courseName"]."</td>";
                             echo "<td>".$row["credit"]."</td>";
-                            echo "<td>".$row["facultyName"]."</td>";
                             echo "</tr>";
                         }
                     ?>

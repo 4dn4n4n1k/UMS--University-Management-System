@@ -28,7 +28,7 @@ $allCourses=getAllCourses();
 
 <head>
     <title>Add Course</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/student.css">
     <script src="js/studentDashboardJs.js" defer></script>
 </head>
 

@@ -7,7 +7,7 @@
         $conn = dbConnect();
 
         if(!$conn){
-            return null;
+            return false;
         }
 
         $sql = "SELECT * FROM users WHERE email = ?";
@@ -43,6 +43,7 @@
 
         if($user !== false){
 
+            $_SESSION["userId"] = $user["id"];
             $_SESSION["role"] = $user["role"];
 
             if($user["role"] == "admin"){
@@ -50,7 +51,7 @@
                 exit();
             }
             elseif($user["role"] == "student"){
-                header("Location: ../views/student/student.php");
+                header("Location: ../views/student/studentDashboard.php");
                 exit();
             }
             elseif($user["role"] == "faculty"){
@@ -59,7 +60,7 @@
             }
         }
         else{
-            header("Location: ../Sign_in/sign_in.php?error=1");
+            header("Location: ../controllers/Sign_in/sign_in.php?error=1");
             exit();
         }
     }

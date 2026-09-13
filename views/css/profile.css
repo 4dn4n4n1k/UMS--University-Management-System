@@ -1,0 +1,225 @@
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    padding: 30px 34px 40px;
+    background: #071a33;
+    color: #17243a;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+body > h2 {
+    margin: 0 0 18px 18px;
+    color: #20c56b;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+
+body > nav {
+    width: 185px;
+    position: fixed;
+    top: 30px;
+    left: 34px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+body > nav a,
+body > nav button {
+    width: 100%;
+    min-height: 36px;
+    padding: 9px 12px;
+    border: 0;
+    border-radius: 4px;
+    background: #12365d;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+body > nav a:hover,
+body > nav button:hover {
+    background: #1c4a78;
+    transform: translateY(-1px);
+}
+
+body > nav a[href="profile.php"] {
+    background: #20b95f;
+}
+
+
+body > nav button,
+body > nav #logoutBtn {
+    margin-top: 8px;
+    background: #ed1518;
+    color: #ffffff;
+}
+
+body > nav button:hover,
+body > nav #logoutBtn:hover {
+    background: #c91013;
+}
+
+
+
+body > h1,
+body > table {
+    margin-left: 220px;
+}
+
+body > h1 {
+    max-width: 1080px;
+    margin-top: 0;
+    margin-right: auto;
+    margin-bottom: 18px;
+    padding: 22px 26px 0;
+    color: #12345a;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+
+body > table {
+    width: calc(100% - 220px);
+    max-width: 1080px;
+    border: 0 !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.16);
+}
+
+body > table tr {
+    background: #ffffff;
+}
+
+body > table th,
+body > table td {
+    padding: 15px 18px;
+    border: 0;
+    border-bottom: 1px solid #e3e7ed;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: left;
+}
+
+body > table th {
+    width: 30%;
+    background: #f7f9fb;
+    color: #526176;
+    font-weight: 700;
+}
+
+body > table td {
+    color: #26364c;
+    font-weight: 500;
+}
+
+body > table tr:last-child th,
+body > table tr:last-child td {
+    border-bottom: 0;
+}
+
+
+body.faculty > h2,
+body.role-faculty > h2 {
+    color: #7547e8;
+}
+
+body.faculty > nav a[href="profile.php"],
+body.role-faculty > nav a[href="profile.php"] {
+    background: #7442dd;
+}
+
+/* Admin */
+body.admin > h2,
+body.role-admin > h2 {
+    color: #ff8425;
+}
+
+body.admin > nav a[href="profile.php"],
+body.role-admin > nav a[href="profile.php"] {
+    background: #ff7a1a;
+}
+
+@media (max-width: 800px) {
+
+    body {
+        padding: 20px;
+    }
+
+    body > nav {
+        position: static;
+        width: 100%;
+        margin-bottom: 24px;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 5px;
+    }
+
+    body > nav button,
+    body > nav #logoutBtn {
+        margin-top: 0;
+    }
+
+    body > h2,
+    body > h1,
+    body > table {
+        margin-left: 0;
+    }
+
+    body > h2 {
+        margin-left: 0;
+    }
+
+    body > h1 {
+        padding: 0;
+        margin-bottom: 14px;
+    }
+
+    body > table {
+        width: 100%;
+    }
+}
+
+@media (max-width: 500px) {
+
+    body {
+        padding: 14px;
+    }
+
+    body > nav {
+        grid-template-columns: 1fr;
+    }
+
+    body > table th,
+    body > table td {
+        padding: 12px 10px;
+        font-size: 12px;
+    }
+
+    body > table th {
+        width: 38%;
+    }
+}

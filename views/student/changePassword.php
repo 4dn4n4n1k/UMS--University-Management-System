@@ -1,72 +1,165 @@
 <?php
+
 session_start();
-if(isset($_SESSION["userId"]) && isset($_SESSION["role"]))
-{
-    if($_SESSION["role"]=="student")
-    {
 
-    }
-    else
-    {
-        header("Location: ../login.php");
-    }
+if (!isset($_SESSION["userId"]) || !isset($_SESSION["role"])) {
+    header("Location: ../../controllers/Sign_in/sign_in.php");
+    exit();
 }
 
-else
-{
-    header("Location: ../login.php");
+
+if ($_SESSION["role"] !== "student") {
+
+    if ($_SESSION["role"] === "admin") {
+        header("Location: ../admin/admin.php");
+        exit();
+    }
+
+    if ($_SESSION["role"] === "faculty") {
+        header("Location: ../faculty/faculty.php");
+        exit();
+    }
+
+    header("Location: ../../controllers/Sign_in/sign_in.php");
+    exit();
 }
+
+$message = $_GET["msg"] ?? "";
+
 ?>
 
+<!DOCTYPE html>
 
-<!doctype html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Change Password</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <script src="js/studentDashboardJs.js" defer></script>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/changePassword.css">
+
+    <title>Change Password | UMS</title>
+
 </head>
 
 <body>
-    <div class="layout">
 
-        <div class="sidebar">
-            <h3 class="roleTitle roleStudent">Student</h3>
-            <a href="studentDashboard.php">Dashboard</a>
-            <a href="myCourses.php">My Courses</a>
-            <a href="addCourse.php">Add Course</a>
-            <a href="dropCourse.php">Drop Course</a>
-            <a href="results.php">Results</a>
-            <a href="profile.php">Profile</a>
-            <a href="changePassword.php">Change Password</a>
-            <button id="logoutBtn" class="logoutBtn">Logout</button>
+    <h2>Student</h2>
+
+
+    <nav>
+
+        <a href="studentDashboard.php">Dashboard</a>
+
+        <a href="myCourses.php">My Courses</a>
+
+        <a href="addCourse.php">Add Course</a>
+
+        <a href="dropCourse.php">Drop Course</a>
+
+        <a href="results.php">Results</a>
+
+        <a href="profile.php">Profile</a>
+
+        <a href="changePassword.php">Change Password</a>
+
+        <button type="button" id="logoutBtn">Logout</button>
+
+    </nav>
+
+
+    <h1>Change Password</h1>
+
+
+    <?php if ($message !== ""): ?>
+
+        <p>
+            <?php echo htmlspecialchars($message); ?>
+        </p>
+
+    <?php endif; ?>
+
+
+    <form
+        action="../../controllers/changePasswordControls.php"
+        method="POST"
+    >
+
+        <div>
+
+            <label for="currentPassword">
+                Current Password:
+            </label>
+
+            <br>
+
+            <input
+                type="password"
+                id="currentPassword"
+                name="currentPassword"
+                required
+            >
+
         </div>
 
-        <div class="main">
-            <div class="panel">
-                <h2>Change Password</h2>
-                <span>
-                    <?php
-                        if(isset($_GET["msg"]))
-                            {
-                                echo $_GET["msg"];
-                            }
-                    ?>
-                </span>
-                <form action="../../controllers/changePasswordControls.php" method="post">
-                    <label for="currentPass">Current Password:</label>
-                    <input type="password" name="currentPass" id="currentPass"><br>
 
-                    <label for="newPass">New Password:</label>
-                    <input type="password" name="newPass" id="newPass"><br>
+        <br>
 
-                    <input type="submit" name="submit" value="Update Password" class="btnOrange">
-                </form>
-            </div>
+
+        <div>
+
+            <label for="newPassword">
+                New Password:
+            </label>
+
+            <br>
+
+            <input
+                type="password"
+                id="newPassword"
+                name="newPassword"
+                minlength="8"
+                required
+            >
+
         </div>
 
-    </div>
+
+        <br>
+
+
+        <div>
+
+            <label for="confirmPassword">
+                Confirm New Password:
+            </label>
+
+            <br>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                name="confirmPassword"
+                minlength="8"
+                required
+            >
+
+        </div>
+
+
+        <br>
+
+
+        <button type="submit">
+            Change Password
+        </button>
+
+    </form>
+
+
+    <script src="js/studentDashboardJs.js"></script>
+
 </body>
 
 </html>

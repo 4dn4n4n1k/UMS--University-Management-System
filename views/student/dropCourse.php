@@ -28,7 +28,7 @@ $myCourses=getEnrolledCourses($_SESSION["userId"]);
 
 <head>
     <title>Drop Course</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/student.css">
     <script src="js/studentDashboardJs.js" defer></script>
 </head>
 

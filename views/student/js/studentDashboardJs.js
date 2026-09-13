@@ -1,6 +1,9 @@
 const logoutBtn = document.getElementById("logoutBtn");
-logoutBtn.addEventListener("click", logoutMe);
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", logoutMe);
+}
 
 function logoutMe() {
-    location.href = "../logout.php";
+    location.href = "../../models/logout.php";
 }

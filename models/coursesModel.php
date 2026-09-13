@@ -1,222 +1,261 @@
 <?php
-require_once "dbConnect.php";
+
+require_once "database.php";
+
+function getStudentIdFromUserId($userId)
+{
+    $conn = dbConnect();
+
+    if (!$conn) {
+        return false;
+    }
+
+    $sql = "SELECT students.id AS studentId
+            FROM users
+            INNER JOIN students
+                ON users.username = students.username
+            WHERE users.id = ?";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        mysqli_close($conn);
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, "i", $userId);
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (mysqli_num_rows($result) == 0) {
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        return false;
+    }
+
+    $row = mysqli_fetch_assoc($result);
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+
+    return $row["studentId"];
+}
+
 
 function getAllCourses()
 {
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="SELECT * FROM courses";
-        $result=mysqli_query($conn, $sql);
-        return $result;
+    $conn = dbConnect();
+
+    if (!$conn) {
+        return false;
     }
-    else
-    {
-        echo "connection failed";
-    }
+
+    $sql = "SELECT
+                id AS courseId,
+                course_name AS courseName,
+                credit
+            FROM courses
+            ORDER BY id";
+
+    $result = mysqli_query($conn, $sql);
+
+    mysqli_close($conn);
+
+    return $result;
 }
 
-function getCoursesByFaculty($facultyId)
+
+function checkEnrollment($userId, $courseId)
 {
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="SELECT * FROM courses WHERE facultyId=?";
-        $stmt=mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "s", $facultyId);
-        mysqli_stmt_execute($stmt);
-        $result=mysqli_stmt_get_result($stmt);
+    $studentId = getStudentIdFromUserId($userId);
 
-        return $result;
+    if ($studentId === false) {
+        return false;
     }
-    else
-    {
-        echo "connection failed";
+
+    $conn = dbConnect();
+
+    if (!$conn) {
+        return false;
     }
+
+    $sql = "SELECT id
+            FROM enrollments
+            WHERE student_id = ?
+            AND course_id = ?";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        mysqli_close($conn);
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, "ii", $studentId, $courseId);
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
+
+    $enrolled = mysqli_num_rows($result) > 0;
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+
+    return $enrolled;
 }
 
-function checkEnrollment($studentId, $courseId)
+
+function addEnrollment($userId, $courseId)
 {
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="SELECT * FROM enrollments WHERE studentId=? AND courseId=?";
-        $stmt=mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "si", $studentId, $courseId);
-        mysqli_stmt_execute($stmt);
-        $result=mysqli_stmt_get_result($stmt);
+    $studentId = getStudentIdFromUserId($userId);
 
-        if(mysqli_num_rows($result)>0)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+    if ($studentId === false) {
+        return false;
     }
-    else
-    {
-        echo "connection failed";
+
+    $conn = dbConnect();
+
+    if (!$conn) {
+        return false;
     }
+
+    $sql = "INSERT INTO enrollments
+            (student_id, course_id)
+            VALUES (?, ?)";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        mysqli_close($conn);
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, "ii", $studentId, $courseId);
+
+    $success = mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+
+    return $success;
 }
 
-function addEnrollment($studentId, $courseId)
+
+function dropEnrollment($userId, $courseId)
 {
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="INSERT INTO enrollments (studentId, courseId) VALUES (?,?)";
-        $stmt=mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "si", $studentId, $courseId);
+    $studentId = getStudentIdFromUserId($userId);
 
-        if(mysqli_stmt_execute($stmt))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+    if ($studentId === false) {
+        return false;
     }
-    else
-    {
-        echo "connection failed";
+
+    $conn = dbConnect();
+
+    if (!$conn) {
+        return false;
     }
+
+    $sql = "DELETE FROM enrollments
+            WHERE student_id = ?
+            AND course_id = ?";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        mysqli_close($conn);
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, "ii", $studentId, $courseId);
+
+    $success = mysqli_stmt_execute($stmt);
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+
+    return $success;
 }
 
-function dropEnrollment($studentId, $courseId)
+
+function getEnrolledCourses($userId)
 {
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="DELETE FROM enrollments WHERE studentId=? AND courseId=?";
-        $stmt=mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "si", $studentId, $courseId);
+    $studentId = getStudentIdFromUserId($userId);
 
-        if(mysqli_stmt_execute($stmt))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+    if ($studentId === false) {
+        return false;
     }
-    else
-    {
-        echo "connection failed";
+
+    $conn = dbConnect();
+
+    if (!$conn) {
+        return false;
     }
+
+    $sql = "SELECT
+                courses.id AS courseId,
+                courses.course_name AS courseName,
+                courses.credit AS credit
+            FROM enrollments
+            INNER JOIN courses
+                ON enrollments.course_id = courses.id
+            WHERE enrollments.student_id = ?
+            ORDER BY courses.id";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        mysqli_close($conn);
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, "i", $studentId);
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
+
+
+    return $result;
 }
 
-function getEnrolledCourses($studentId)
+
+
+function countEnrolled($userId)
 {
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="SELECT courses.courseId, courses.courseName, courses.credit, users.name AS facultyName
-              FROM enrollments
-              JOIN courses ON enrollments.courseId=courses.courseId
-              LEFT JOIN users ON courses.facultyId=users.userId
-              WHERE enrollments.studentId=?";
-        $stmt=mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "s", $studentId);
-        mysqli_stmt_execute($stmt);
-        $result=mysqli_stmt_get_result($stmt);
+    $studentId = getStudentIdFromUserId($userId);
 
-        return $result;
+    if ($studentId === false) {
+        return 0;
     }
-    else
-    {
-        echo "connection failed";
+
+    $conn = dbConnect();
+
+    if (!$conn) {
+        return 0;
     }
+
+    $sql = "SELECT COUNT(*) AS total
+            FROM enrollments
+            WHERE student_id = ?";
+
+    $stmt = mysqli_prepare($conn, $sql);
+
+    if (!$stmt) {
+        mysqli_close($conn);
+        return 0;
+    }
+
+    mysqli_stmt_bind_param($stmt, "i", $studentId);
+    mysqli_stmt_execute($stmt);
+
+    $result = mysqli_stmt_get_result($stmt);
+
+    $row = mysqli_fetch_assoc($result);
+
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+
+    return (int)$row["total"];
 }
-
-function countEnrolled($studentId)
-{
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="SELECT COUNT(*) AS total FROM enrollments WHERE studentId=?";
-        $stmt=mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "s", $studentId);
-        mysqli_stmt_execute($stmt);
-        $result=mysqli_stmt_get_result($stmt);
-
-        while($row=mysqli_fetch_assoc($result))
-        {
-            return $row["total"];
-        }
-    }
-    else
-    {
-        echo "connection failed";
-    }
-}
-
-function getStudentsOfFaculty($facultyId)
-{
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="SELECT users.userId, users.name, users.email, courses.courseName
-              FROM enrollments
-              JOIN courses ON enrollments.courseId=courses.courseId
-              JOIN users ON enrollments.studentId=users.userId
-              WHERE courses.facultyId=?";
-        $stmt=mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "s", $facultyId);
-        mysqli_stmt_execute($stmt);
-        $result=mysqli_stmt_get_result($stmt);
-
-        return $result;
-    }
-    else
-    {
-        echo "connection failed";
-    }
-}
-
-function countCourses()
-{
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="SELECT COUNT(*) AS total FROM courses";
-        $result=mysqli_query($conn, $sql);
-
-        while($row=mysqli_fetch_assoc($result))
-        {
-            return $row["total"];
-        }
-    }
-    else
-    {
-        echo "connection failed";
-    }
-}
-
-function countByFaculty($facultyId)
-{
-    $conn=dbConnection();
-    if($conn)
-    {
-        $sql="SELECT COUNT(*) AS total FROM courses WHERE facultyId=?";
-        $stmt=mysqli_prepare($conn, $sql);
-        mysqli_stmt_bind_param($stmt, "s", $facultyId);
-        mysqli_stmt_execute($stmt);
-        $result=mysqli_stmt_get_result($stmt);
-
-        while($row=mysqli_fetch_assoc($result))
-        {
-            return $row["total"];
-        }
-    }
-    else
-    {
-        echo "connection failed";
-    }
-}
-
 
 ?>
