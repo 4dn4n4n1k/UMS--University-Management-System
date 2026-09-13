@@ -55,7 +55,7 @@
                         </span><br>
 
                         <label for="username">Username:</label>
-                        <input type="text" name="username" id="username" placeholder="Type a username" value="<?php echo isset($_GET['username']) ? htmlspecialchars($_GET['username']) : ''; ?>">
+                        <input type="text" name="username" id="username" placeholder="Type a username" value="<?php echo isset($_GET['username']) ? htmlspecialchars($_GET['username']) : ''; ?>" onkeyup="showHint(this.value)">
                         <span id="usernameError">
                             <?php
                                 if(isset($_GET["userError"])){
@@ -130,31 +130,34 @@
         </div>
 
         <script>
-            const usernameInput = document.getElementById("username");
-            const usernameError = document.getElementById("usernameError");
+           function showHint(str){
+            if(str.length == 0){
+                document.getElementById("usernameError").innerHTML = "";
+                return;
+            }
+            else{
+                var xmlhttp = new XMLHttpRequest();
 
-            usernameInput.addEventListener("input", function(){
-                const username = usernameInput.value.trim();
+                xmlhttp.onreadystatechange = function(){
+                    if(this.readyState == 4 && this.status == 200){
+                        
+                        var usernameError = document.getElementById("usernameError");
 
-                if(username === ""){
-                    usernameError.innerHTML = "";
-                    return;
+                        if(this.responseText.trim() == "available"){
+                            usernameError.innerHTML = "Username Available";
+                            usernameError.style.color = "yellowgreen";
+                        }
+                        else if(this.responseText.trim() == "taken"){
+                            usernameError.innerHTML = "Username already taken";
+                            usernameError.style.color = "red";
+                        }
+                    }
                 }
-                fetch("../models/check_username.php?username=" + encodeURIComponent(username)).then(response => response.text()).then(data => {
-                    
-                    data = data.trim();
-                    if(usernameInput.value.trim() !== username) return;
 
-                    if(data == "taken"){
-                        usernameError.innerHTML = "Username already taken";
-                        usernameError.style.color = "red";
-                    }
-                    else if(data === "available"){
-                        usernameError.innerHTML = "Username available";
-                        usernameError.style.color = "yellow";
-                    }
-                }).catch(error => {console.log(error);})
-            });
+                xmlhttp.open("GET", "../models/check_username.php?username=" + encodeURIComponent(str), true);
+                xmlhttp.send();
+            }
+        }
         </script>
     </body>
 </html>
