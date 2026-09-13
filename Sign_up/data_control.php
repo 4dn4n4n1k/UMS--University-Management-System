@@ -82,7 +82,7 @@
             $hasError = true;
         }
 
-        if($avatarError == UPLOAD_ERR_NO_FILE){
+        if($avatar["error"] == UPLOAD_ERR_NO_FILE){
             $avatarError = "Profile picture must be provided";
             $hasError = true;
         }
@@ -120,7 +120,39 @@
             mysqli_stmt_bind_param($stmt, "ssss", $username, $email, $passwordHash, $role);
 
             if(mysqli_stmt_execute($stmt)){
+                if($role == "student"){
+                    $sqlRole = "INSERT into students (username, name, date_of_birth, gender, profile_image) VALUES (?, ?, ?, ?, ?)";
+
+                    $stmtRole = mysqli_prepare($conn, $sqlRole);
+
+                    mysqli_stmt_bind_param($stmtRole, "sssss", $username, $fName, $dob, $gender, $avatar["name"]);
+
+                    mysqli_stmt_execute($stmtRole);
+                    mysqli_stmt_close($stmtRole);
+                }
+
+                elseif($role == "faculty"){
+                    $sqlRole = "INSERT INTO faculty (username, name, gender, profile_image) VALUES (?, ?, ?, ?)";
+                    $stmtRole = mysqli_prepare($conn, $sqlRole);
+
+                    mysqli_stmt_bind_param($stmtRole, "ssss", $username, $fName, $gender, $avatar["name"]);
+
+                    mysqli_stmt_execute($stmtRole);
+                    mysqli_stmt_close($stmtRole);     
+                }
+
+                elseif($role == "admin"){
+                    $sqlRole = "INSERT INTO admins (username, name) VALUES (?, ?)";
+                    $stmtRole = mysqli_prepare($conn, $sqlRole);
+                    
+                    mysqli_stmt_bind_param($stmtRole, "ss", $username, $fName);
+
+                    mysqli_stmt_execute($stmtRole);
+                    mysqli_stmt_close($stmtRole); 
+                }
+
                 header("Location: ../Sign_in/sign_in.php?signup=success");
+                exit();
             }
             else{
                 echo "Registration Failed: ". mysqli_error($conn); 
