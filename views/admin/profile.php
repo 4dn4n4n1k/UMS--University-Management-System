@@ -24,33 +24,47 @@ if ($_SESSION["role"] !== "admin") {
 
 require_once "../../models/database.php";
 
+$userId = $_SESSION["userId"];
 $conn = dbConnect();
 
-$totalStudents = 0;
-$totalFaculty = 0;
+$admin = false;
 
 if ($conn) {
-    $studentResult = mysqli_query(
-        $conn,
-        "SELECT COUNT(*) AS total FROM students"
-    );
 
-    if ($studentResult) {
-        $studentRow = mysqli_fetch_assoc($studentResult);
-        $totalStudents = (int)$studentRow["total"];
-    }
+    $sql = "SELECT
+                users.id AS userId,
+                users.username AS username,
+                users.email AS email,
+                users.role AS role,
+                admins.name AS name
+            FROM users
+            INNER JOIN admins
+                ON users.username = admins.username
+            WHERE users.id = ?
+            AND users.role = 'admin'";
 
-    $facultyResult = mysqli_query(
-        $conn,
-        "SELECT COUNT(*) AS total FROM faculty"
-    );
+    $stmt = mysqli_prepare($conn, $sql);
 
-    if ($facultyResult) {
-        $facultyRow = mysqli_fetch_assoc($facultyResult);
-        $totalFaculty = (int)$facultyRow["total"];
+    if ($stmt) {
+
+        mysqli_stmt_bind_param($stmt, "i", $userId);
+        mysqli_stmt_execute($stmt);
+
+        $result = mysqli_stmt_get_result($stmt);
+
+        if (mysqli_num_rows($result) > 0) {
+            $admin = mysqli_fetch_assoc($result);
+        }
+
+        mysqli_stmt_close($stmt);
     }
 
     mysqli_close($conn);
+}
+
+if (!$admin) {
+    header("Location: admin.php");
+    exit();
 }
 
 ?>
@@ -64,9 +78,9 @@ if ($conn) {
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Dashboard | UMS</title>
+    <title>Profile | UMS</title>
 
-    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/profile.css">
 
 </head>
 
@@ -80,11 +94,8 @@ if ($conn) {
 
             <nav>
 
-                <a href="admin.php" class="active">
+                <a href="admin.php">
                     Dashboard
-                </a>
-                <a href="students.php">
-                    Student Accounts
                 </a>
 
                 <a href="addRemoveAdmin.php">
@@ -95,7 +106,7 @@ if ($conn) {
                     Add / Remove Faculty
                 </a>
 
-                <a href="profile.php">
+                <a href="profile.php" class="active">
                     Profile
                 </a>
 
@@ -106,7 +117,6 @@ if ($conn) {
                 <button
                     type="button"
                     id="logoutBtn"
-                    class="logout"
                 >
                     Logout
                 </button>
@@ -118,79 +128,67 @@ if ($conn) {
 
         <main class="main">
 
-            <section class="panel">
+            <section class="profile-panel">
 
-                <h1>Welcome Back, Admin</h1>
+                <h1>My Profile</h1>
 
+                <div class="profile-body">
 
-                <div class="cards">
+                    <table>
 
-                    <div class="card">
+                        <tr>
 
-                        <h3>Total Students</h3>
+                            <th>User ID</th>
 
-                        <p>
-                            <?php echo $totalStudents; ?>
-                        </p>
+                            <td>
+                                <?php echo htmlspecialchars($admin["userId"]); ?>
+                            </td>
 
-                    </div>
+                        </tr>
 
+                        <tr>
 
-                    <div class="card">
+                            <th>Username</th>
 
-                        <h3>Total Faculty</h3>
+                            <td>
+                                <?php echo htmlspecialchars($admin["username"]); ?>
+                            </td>
 
-                        <p>
-                            <?php echo $totalFaculty; ?>
-                        </p>
+                        </tr>
 
-                    </div>
+                        <tr>
+
+                            <th>Name</th>
+
+                            <td>
+                                <?php echo htmlspecialchars($admin["name"]); ?>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Email</th>
+
+                            <td>
+                                <?php echo htmlspecialchars($admin["email"]); ?>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+
+                            <th>Role</th>
+
+                            <td>
+                                <?php echo htmlspecialchars($admin["role"]); ?>
+                            </td>
+
+                        </tr>
+
+                    </table>
 
                 </div>
-
-
-                <h2>System Overview</h2>
-
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Category</th>
-
-                            <th>Total</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-
-                            <td>Students</td>
-
-                            <td>
-                                <?php echo $totalStudents; ?>
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <td>Faculty</td>
-
-                            <td>
-                                <?php echo $totalFaculty; ?>
-                            </td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
 
             </section>
 
